@@ -52,7 +52,7 @@ function draw() {
     push();
     textAlign(CENTER);
     textSize(sizetext+10);
-    text("how AI classifies love", width/2, height/20);
+    text("AI classifies love", width/2, height/20);
     textSize(sizetext+2);
     text("positivity ----------------->", width/2, 19*height/20);
     rotate(radians(270));
