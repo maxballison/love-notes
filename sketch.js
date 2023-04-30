@@ -5,7 +5,8 @@ let letters = [];
 //number of letters that are currently being shown on screen
 let letternum = 1;
 //speed at which the animations are playing
-let easing = 0.06;
+//let easing = 0.06;
+let easing = .4;
 //different pngs of the animation
 let animation = []
 //how big the envelopes should be
@@ -16,10 +17,13 @@ let enveloperatio;
 let padding = 30;
 //text size
 let sizetext;
-
+//speed of typing
+let typespeed = .5;
+//time of waiting after letter
+let waittime = 150;
 function preload() {
     //load the csv file and push the animation frames
-    table = loadTable("gpt4.csv", "csv", "header");
+    table = loadTable("gpt4new.csv", "csv", "header");
     for (let i = 1; i < 23; i++) {
         animation.push(loadImage('letter/Untitled_Artwork-' + str(i)+ '.png'));
 
@@ -30,16 +34,30 @@ function preload() {
 function setup() {
     rectMode(CENTER);
     noStroke();
-createCanvas(windowWidth,windowHeight);
-//load letter data into objects
-for (let row of table.rows) {
-    let letter = row.get("note");
-    let positivity = row.get("positivity");
-    let originality = row.get("Originality");
+    createCanvas(windowWidth, windowHeight);
     
-    letters.push(new LoveLetter(letter, parseFloat(positivity), parseFloat(originality)))
-}
-}
+    // load letter data into objects
+    for (let row of table.rows) {
+        let letter = row.get("note");
+        let positivity = row.get("positivity");
+        let originality = row.get("Originality");
+    
+        letters.push(new LoveLetter(letter, parseFloat(positivity), parseFloat(originality)));
+    }
+    
+    // shuffle the 'letters' array
+    shuffleArray(letters);
+    }
+    
+    // shuffleArray function
+    const shuffleArray = array => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    }
 
 function draw() {
     background(235,191,196,255);
@@ -129,12 +147,12 @@ update() {
         rectMode(CORNER)
         text(currentString, this.noteposx-this.notesize/2.4+10, this.noteposy - this.notesize/2+10,this.notesize/1.2-10);
         pop();
-        this.currentchar += 0.5;
+        this.currentchar += typespeed;
         if (currentString == this.letter) {
             if (this.temp == 0) {
                 this.temp = frameCount-5;
             }
-            if ((frameCount - this.temp) % 150 == 0) {
+            if ((frameCount - this.temp) % waittime == 0) {
                 this.state++;
                 this.temp = 0;
             }
