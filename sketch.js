@@ -12,6 +12,10 @@ let animation = []
 let envelopesize = 2;
 //the width of the envelopes, should scale things in the screen with this number
 let enveloperatio;
+//padding 
+let padding = 30;
+//text size
+let sizetext;
 
 function preload() {
     //load the csv file and push the animation frames
@@ -39,13 +43,19 @@ for (let row of table.rows) {
 
 function draw() {
     background(235,191,196,255);
+    setText();
     //maintain letters
     for (let i = 0; i < letternum; i++) {
         letters[i].drawLetter();
        letters[i].update();
     }
-
-
+    push();
+    textAlign(CENTER);
+    textSize(sizetext+2);
+    text("positivity ----------------->", width/2, 19*height/20);
+    rotate(radians(270));
+    text("originality ----------------->", -width/4, height/20);
+    pop();
 }
 
 
@@ -55,8 +65,8 @@ constructor(letter, positivity, originality) {
     this.positivity = positivity;
     this.originality = originality;
     //how the values are mapped to the screen
-    this.mappedPositivity = map(this.positivity, 0, 1, 0, width);
-    this.mappedOriginality = map(this.originality, 0, 1, 0, height);
+    this.mappedPositivity = map(this.positivity, 0, 1, 0+padding, width-padding);
+    this.mappedOriginality = map(this.originality, 0, 1, height-padding, 0+padding);
     //letter starting position
     this.x = width/2;
     this.y = height + 100;
@@ -81,7 +91,7 @@ drawLetter() {
 update() {
     //letter floats onto screen
     if (this.state == 0) {
-    let newpos = this.ease(width / 2, 2*height/3, this.x, this.y);
+    let newpos = this.ease(width / 2, 3*height/4, this.x, this.y);
     this.x = newpos.curx;
     this.y = newpos.cury;
     }
@@ -105,7 +115,7 @@ update() {
         if (this.notesize <= letsize) {
             this.notesize+=7;
         }
-        let newpos = this.ease(width/2, height/3, this.noteposx,this.noteposy);
+        let newpos = this.ease(width/2, height/2.2, this.noteposx,this.noteposy);
         this.noteposx = newpos.curx;
         this.noteposy = newpos.cury;
     }
@@ -114,11 +124,6 @@ update() {
         rect(this.noteposx,this.noteposy,this.notesize/1.2, this.notesize);
         push();
         //274 - 114
-        let sizetext = round(map(enveloperatio,100,300,8,16));
-        console.log(sizetext)
-        textSize(sizetext);
-        textFont(`Courier`);
-        textAlign(LEFT, TOP);
         rectMode(CORNER)
         text(currentString, this.noteposx-this.notesize/2.4+10, this.noteposy - this.notesize/2+10,this.notesize/1.2-10);
         pop();
@@ -181,4 +186,12 @@ function drawFrame (picture, posx, posy) {
     let yPos = posy-newHeight/2
 
     image(img, xPos, yPos-.26*newHeight, newWidth, newHeight);
+}
+
+function setText() {
+    sizetext = round(map(enveloperatio,100,300,8,16));
+    console.log(sizetext)
+    textSize(sizetext);
+    textFont(`Courier`);
+    textAlign(LEFT, TOP);
 }
