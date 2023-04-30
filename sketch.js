@@ -5,8 +5,7 @@ let letters = [];
 //number of letters that are currently being shown on screen
 let letternum = 1;
 //speed at which the animations are playing
-//let easing = 0.06;
-let easing = .4;
+let easing = 0.06;
 //different pngs of the animation
 let animation = []
 //how big the envelopes should be
