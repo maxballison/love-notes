@@ -54,7 +54,7 @@ function draw() {
     textSize(sizetext+2);
     text("positivity ----------------->", width/2, 19*height/20);
     rotate(radians(270));
-    text("originality ----------------->", -width/4, height/20);
+    text("originality ----------------->", -height/2, width/20);
     pop();
 }
 
